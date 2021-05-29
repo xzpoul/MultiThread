@@ -14,8 +14,10 @@ public class ConcurrentSkipListSetDemo {
 
 
         Iterator<String> iterator = skipListSet.iterator();
-        while (iterator.hasNext()){
-            System.out.println(iterator.next());
+        while (iterator.hasNext()) {
+            // 不能一边遍历一边删除
+            iterator.remove(); // IllegalStateException
+            System.out.println(iterator.next()); // ConcurrentModificationException
         }
     }
 }

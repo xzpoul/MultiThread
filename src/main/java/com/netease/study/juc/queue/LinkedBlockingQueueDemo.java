@@ -7,6 +7,20 @@ import java.util.concurrent.LinkedBlockingQueue;
 // 如果有阻塞需求，用这个。类似生产者消费者场景
 public class LinkedBlockingQueueDemo {
     public static void main(String[] args) throws InterruptedException {
+
+        LinkedBlockingQueue<String> linkedBlockingQueue = new LinkedBlockingQueue<String>(3);
+        //    private final int capacity;
+        //    private final AtomicInteger count;
+        //    transient LinkedBlockingQueue.Node<E> head;
+        //    private transient LinkedBlockingQueue.Node<E> last;
+        //    private final ReentrantLock takeLock;
+        //    private final Condition notEmpty;
+        //    private final ReentrantLock putLock;
+        //    private final Condition notFull;
+
+        // 1. 存储 链表
+
+
         // 构造时可以指定容量，默认Integer.MAX_VALUE
         LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<String>(3);
         // 1秒消费数据一个

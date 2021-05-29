@@ -12,6 +12,31 @@ import java.util.concurrent.TimeUnit;
 // 则出现期满，poll就以移除这个元素了。此队列不允许使用 null 元素。
 public class DelayQueueDemo {
     public static void main(String[] args) throws InterruptedException {
+
+        // 延迟队列本义是一个优先级队列,按延时最短的进行排序.延迟最短的最先出队列.
+        // poll查看第一个first是否到时间了,自己实现判断逻辑getDelay.
+
+        //    private final transient ReentrantLock lock = new ReentrantLock();
+        //    private final PriorityQueue<E> q = new PriorityQueue();
+        //    private Thread leader;
+        //    private final Condition available;
+
+        // public E poll() {
+        //        ReentrantLock lock = this.lock;
+        //        lock.lock();
+        //
+        //        Delayed var3;
+        //        try {
+        //            E first = (Delayed)this.q.peek();
+        //            var3 = first != null && first.getDelay(TimeUnit.NANOSECONDS) <= 0L ? (Delayed)this.q.poll() : null;
+        //        } finally {
+        //            lock.unlock();
+        //        }
+        //
+        //        return var3;
+        //    }
+
+
         DelayQueue<Message> delayQueue = new DelayQueue<Message>();
         // 这条消息5秒后发送
         Message message = new Message("message - 00001", new Date(System.currentTimeMillis() + 5000L));
@@ -21,13 +46,33 @@ public class DelayQueueDemo {
             System.out.println(delayQueue.poll());
             Thread.sleep(1000L);
         }
-        // 线程池中的定时调度就是这样实现的
+        // 输出
+        //null
+        //null
+        //null
+        //null
+        //null
+        //Message{content='message - 00001', sendTime=Sat May 29 17:10:55 CST 2021}
+        //null
+        //null
+        //null
+        //...
+
     }
 }
+
+// 线程池的定时即使用是实现阻塞队列 workQueue java.util.concurrent.BlockingQueue
+// 线程池中的定时调度就是实现的Delayed 及 compareTo
+//
+//        public long getDelay(TimeUnit unit) {
+//            return unit.convert(this.time - System.nanoTime(), TimeUnit.NANOSECONDS);
+//        }
+
 
 // 实现Delayed接口的元素才能存到DelayQueue
 class Message implements Delayed {
 
+    // 延迟时间
     // 判断当前这个元素，是不是已经到了需要被拿出来的时间
     @Override
     public long getDelay(TimeUnit unit) {
